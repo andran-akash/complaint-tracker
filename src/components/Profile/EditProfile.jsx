@@ -1,45 +1,50 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import Input from "react-phone-number-input/input";
-
-import "./profile2.css";
 import { GrUpdate } from "react-icons/gr";
 
-function EditProfile({
-  updateFirstName,
-  updateLastName,
-  updatePhNumber,
-  updateDOB,
-  updateAddress,
-  updateLandmark,
-  updateDistrict,
-  updatePincode,
-}) {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLasttName] = useState("");
-  const [phNumber, setPhNumber] = useState("");
-  const [DOB, setDOB] = useState();
-  const [address, setAddress] = useState("");
-  const [landmark, setLandmark] = useState("");
-  const [district, setDistrict] = useState("");
-  const [pincode, setPincode] = useState();
-  console.log(pincode);
+import "./profile2.css";
+import TicketsService from "../Api/TicketsService";
 
-  //   const [showComponent, setShowComponent] = useState(false);
-  //   const [buttonClicked, setButtonClicked] = useState(false);
+function EditProfile({ user, setUser }) {
+  const [updatedUser, setUpdatedUser] = useState(user);
+  const [error, setError] = useState("");
+  let { profileId } = useParams();
 
-  function handleUpdate() {
-    updateFirstName(firstName);
-    updateLastName(lastName);
-    updatePhNumber(phNumber);
-    updateDOB(DOB);
-    updateAddress(address);
-    updateLandmark(landmark);
-    updateDistrict(district);
-    updatePincode(pincode);
-  }
+  const handleChange = ({ currentTarget: input }) => {
+    if (input.name.includes("residentialAddress.")) {
+      var inputName = input.name.replace("residentialAddress.", "");
+      setUpdatedUser({
+        ...updatedUser,
+        residentialAddress: {
+          ...updatedUser.residentialAddress,
+          [inputName]: input.value,
+        },
+      });
+    } else {
+      setUpdatedUser({ ...updatedUser, [input.name]: input.value });
+    }
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    const responseData = await TicketsService.updateProfileById(
+      profileId,
+      updatedUser
+    );
+    if (responseData !== undefined) {
+      // navigate(`/i-tracker/users/${profileId}/tickets`);
+      setUser(responseData);
+    } else if (responseData.message) {
+      setError(responseData.error.message);
+    } else {
+      setError("Unknown Error. Pls try after sometime");
+    }
+  };
 
   return (
     <div className="profile-details">
+      {error && <div>{error}</div>}
       <div>
         <h6>User Information</h6>
         <div className="profile-margin">
@@ -52,8 +57,10 @@ function EditProfile({
                     <input
                       className="text-input"
                       type="text"
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
+                      name="firstName"
+                      value={updatedUser.firstName}
+                      disabled
+                      onChange={handleChange}
                     />
                   </div>
                 </li>
@@ -62,22 +69,25 @@ function EditProfile({
                   <input
                     className="text-input"
                     type="text"
-                    value={lastName}
-                    onChange={(e) => setLasttName(e.target.value)}
+                    name="lastName"
+                    value={updatedUser.lastName}
+                    disabled
+                    onChange={handleChange}
                   />
                 </li>
                 <li>
                   <div className="list-div">
                     <label className="profile-label">Mobile Number</label>
-                    <Input
-                      country="IN"
-                      international
-                      withCountryCallingCode
+                    <input
+                      // country="IN"
+                      // international
+                      // withCountryCallingCode
                       className="text-input"
                       maxLength={15}
                       //   type="number"
-                      value={phNumber}
-                      onChange={setPhNumber}
+                      name="phNumber"
+                      value={updatedUser.phNumber}
+                      onChange={handleChange}
                       //   onChange={(e) => setPhNumber(e.target.value)}
                     />
                   </div>
@@ -86,9 +96,10 @@ function EditProfile({
                   <label className="profile-label">Date of Birth</label>
                   <input
                     className="text-input"
-                    type="date"
-                    value={DOB}
-                    onChange={(e) => setDOB(e.target.value)}
+                    name="dob"
+                    value={updatedUser.dob}
+                    disabled
+                    onChange={handleChange}
                   />
                 </li>
               </ul>
@@ -105,9 +116,16 @@ function EditProfile({
                     <label className="profile-label">Address</label>
                     <input
                       className="text-input"
+                      maxLength={35}
+                      placeholder="35 Letters in words"
                       type="text"
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
+                      value={
+                        updatedUser.residentialAddress === null
+                          ? ""
+                          : updatedUser.residentialAddress.address
+                      }
+                      name="residentialAddress.address"
+                      onChange={handleChange}
                     />
                   </div>
                 </li>
@@ -116,8 +134,13 @@ function EditProfile({
                   <input
                     className="text-input"
                     type="text"
-                    value={landmark}
-                    onChange={(e) => setLandmark(e.target.value)}
+                    name="residentialAddress.landmark"
+                    value={
+                      updatedUser.residentialAddress === null
+                        ? ""
+                        : updatedUser.residentialAddress.landmark
+                    }
+                    onChange={handleChange}
                   />
                 </li>
                 <li>
@@ -126,19 +149,29 @@ function EditProfile({
                     <input
                       className="text-input"
                       type="text"
-                      value={district}
-                      onChange={(e) => setDistrict(e.target.value)}
+                      name="residentialAddress.district"
+                      value={
+                        updatedUser.residentialAddress === null
+                          ? ""
+                          : updatedUser.residentialAddress.district
+                      }
+                      onChange={handleChange}
                     />
                   </div>
                 </li>
                 <li>
                   <label className="profile-label">Pin-code</label>
                   <input
+                    maxLength={6}
                     className="text-input"
                     // type="number"
-                    value={pincode}
-                    onChange={(e) => setPincode(e.target.value)}
-                    maxLength={6}
+                    name="residentialAddress.pincode"
+                    value={
+                      updatedUser.residentialAddress === null
+                        ? ""
+                        : updatedUser.residentialAddress.pincode
+                    }
+                    onChange={handleChange}
                   />
                 </li>
               </ul>

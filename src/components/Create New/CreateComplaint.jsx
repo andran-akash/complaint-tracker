@@ -1,17 +1,66 @@
 import React, { useEffect, useRef, useState } from "react";
-import "./createnew.css";
 import Modal from "react-modal";
+import { useParams, useNavigate } from "react-router-dom";
 // import { MdOutlineLocationOn } from "react-icons/md";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { MdOutlineMyLocation } from "react-icons/md";
 
+import "./createnew.css";
+import TicketsService from "../Api/TicketsService";
+
 // import { MdOutlineClose } from "react-icons/md";
 // import Select from "react-select";
 
-export default function CreateNew() {
+export default function CreateComplaint() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [ticket, setTicket] = useState({
+    subject: "",
+    description: "",
+    department: "",
+  });
+  let { profileId } = useParams();
+  const [error, setError] = useState("");
+  const [departmentList, setDepartmentList] = useState([]);
+  const navigate = useNavigate();
+  let mounted = true;
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    fetchDepartments(mounted);
+    return () => (mounted = false);
+  }, []);
+
+  async function fetchDepartments(mounted) {
+    if (mounted) {
+      await TicketsService.getDepartments(profileId, "departments").then(
+        (response) => {
+          if (response !== undefined) setDepartmentList(response.fieldValues);
+          if (response.error) {
+            setError(response.error);
+          }
+        }
+      );
+    }
+  }
+
+  const handleChange = ({ currentTarget: input }) => {
+    setTicket({ ...ticket, [input.name]: input.value });
+    console.log(ticket);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const responseData = await TicketsService.createTicket(profileId, ticket);
+    if (responseData.ticket) {
+      navigate(`/i-tracker/users/${profileId}/tickets`);
+    } else if (responseData.error) {
+      setError(responseData.error.message);
+    } else {
+      setError("Unknown Error. Pls try after sometime");
+    }
+  };
+
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -46,22 +95,41 @@ export default function CreateNew() {
             <ul className="create-new-row">
               <li className="create-new-list">
                 <label className="create-new-lable">Subject</label>
-                <input required className="create-new-input" />
+                <input
+                  name="subject"
+                  onChange={handleChange}
+                  required
+                  value={ticket.subject}
+                  className="create-new-input"
+                  maxLength={26}
+                />
               </li>
               <li className="create-new-list">
                 <label className="create-new-lable">Department</label>
-                <select required className="create-new-input">
+                <select
+                  defaultValue=""
+                  name="department"
+                  onChange={handleChange}
+                  required
+                  className="create-new-input"
+                >
                   <option value="">--Select Department--</option>
-                  <option className="option" value="Water Department">
-                    Water Department
-                  </option>
-                  <option value="Road Department">Road Department</option>
+                  {departmentList.map((departmentValue) => {
+                    return (
+                      <option key={departmentValue} value={departmentValue}>
+                        {departmentValue}
+                      </option>
+                    );
+                  })}
                 </select>
               </li>
               <li className="create-new-list">
                 <label className="create-new-lable">Description</label>
                 <textarea
                   placeholder="in 150 words"
+                  name="description"
+                  onChange={handleChange}
+                  value={ticket.description}
                   required
                   className="custom-textarea"
                   maxLength={150}
@@ -110,7 +178,7 @@ export default function CreateNew() {
                           paddingTop: "1px",
                           fontSize: "29px",
                         }}
-                      />{" "}
+                      />
                       Close
                       {/* <MdOutlineClose
                         style={{ paddingTop: "7px", fontSize: "25px" }}
@@ -172,13 +240,21 @@ export default function CreateNew() {
               </li>
               <li className="create-new-list">
                 <label className="create-new-lable">Proximate Landmark</label>
-                <input required className="create-new-input" />
+                <input
+                  name="landmark"
+                  onChange={handleChange}
+                  required
+                  className="create-new-input"
+                />
               </li>
             </ul>
           </div>
         </div>
         <div className="create-new-submit-position">
-          <button className="create-new-submit">Submit</button>
+          <button className="create-new-submit" onClick={handleSubmit}>
+            Submit
+          </button>
+          {error && <div>{error}</div>}
         </div>
       </div>
     </div>

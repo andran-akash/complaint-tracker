@@ -8,6 +8,7 @@
   justify-content: center;
   align-items: center;
 }
+
 .profile-container {
   height: 950px;
   width: 1500px;
@@ -25,7 +26,8 @@
   margin: 25px;
   /* width: 35%; */
   width: 400px;
-  height: 900px;
+  /* height: 900px; */
+  /* height: fit-content; */
   border: 1px solid #ccc;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
@@ -36,7 +38,7 @@
 }
 
 .profile-pic-container {
-  height: 150px;
+  height: fit-content;
   width: 100%;
   /* margin-top: 20px; */
   /* border: 1px solid #ccc; */
@@ -59,7 +61,7 @@
   font-family: sans-serif;
 }
 .profile-address {
-  height: 250px;
+  height: fit-content;
 }
 
 .hide {
@@ -225,6 +227,7 @@
   right: 50%;
   display: flex;
   justify-content: center;
+  margin-bottom: 20px;
 }
 .avatar-container-main {
   display: flex;
@@ -304,10 +307,12 @@
 
 @media (max-width: 768px) {
   .main-container {
-    width: auto;
-    height: auto;
+    width: 100%;
+    height: 100%;
   }
   .profile-container {
+    width: 100%;
+    height: 100%;
     flex-direction: column;
     align-items: center;
     height: auto;
@@ -316,7 +321,10 @@
     height: auto;
   }
   .profile-pic {
-    width: 440px;
+    /* height: 100%; */
+    width: fit-content;
+    /* height: 100%; */
+    /* height: 750px; */
     margin: 0;
     box-shadow: none;
     transition: none;
@@ -325,6 +333,10 @@
     width: 100%;
     margin: 0;
   }
+  .profile-information div {
+    font-weight: normal;
+  }
+
   .profile-pic:hover {
     transform: translateY(0px) translateX(0px);
     box-shadow: none;
@@ -336,12 +348,29 @@
     gap: 1rem;
     /* gap: 4.8rem; */
   }
+  .profile-address {
+    height: fit-content;
+  }
   .list-div {
     padding-left: 0px;
   }
   .profile-details {
+    width: fit-content;
     height: fit-content;
     animation: none;
+    width: 100%;
+    padding: 10px;
+  }
+  .profile-coloum {
+    width: 100%;
+  }
+  .row {
+    width: 100%;
+  }
+  .Grid-effect {
+    width: 100%;
+  }
+  .text-input {
     width: 100%;
   }
   .button-update-position {

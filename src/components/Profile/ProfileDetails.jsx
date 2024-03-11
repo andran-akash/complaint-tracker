@@ -13,17 +13,7 @@ import defaultAvatar from "./man.png";
 // import "react-datepicker/dist/react-datepicker.css";
 // import "react-phone-number-input/style.css";
 
-export default function ProfileDetails({
-  firstName,
-  lastName,
-  phNumber,
-  DOB,
-  address,
-  landmark,
-  district,
-  pincode,
-  onClick,
-}) {
+export default function ProfileDetails({ user, onClick }) {
   const [image, setImage] = useState(null);
 
   // Function to handle file input change
@@ -41,47 +31,66 @@ export default function ProfileDetails({
   };
 
   return (
-    <div>
-      <div className="profile-pic">
-        <div className="profile-pic-container">
-          <div class="container">
-            <div class="gradient"></div>
-            <div class="content"></div>
-            <div className="avatar-container-main">
-              <div className="avatar-container">
-                <img
-                  src={image ? image : defaultAvatar} // Use uploaded image or default avatar
-                  alt="Profile Avatar"
-                  className="avatar"
-                />
-                {!image && <div className="avatar-overlay"></div>}
-                {/* Display upload text if no image */}
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  className="file-input"
-                />
-              </div>
+    <div className="profile-pic">
+      <div className="profile-pic-container">
+        <div className="container">
+          <div className="gradient"></div>
+          <div className="content"></div>
+          <div className="avatar-container-main">
+            <div className="avatar-container">
+              <img
+                src={image ? image : defaultAvatar} // Use uploaded image or default avatar
+                alt="Profile Avatar"
+                className="avatar"
+              />
+              {!image && <div className="avatar-overlay"></div>}
+              {/* Display upload text if no image */}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="file-input"
+              />
             </div>
           </div>
-          <div className="profile-information">
-            <div>
-              Name : {firstName} {lastName}
-            </div>
-            <div>Email: andranakash@gamil.com</div>
-            <div>DOB : {DOB} </div>
-            <div>Mobile Number : {phNumber}</div>
-            <div className="profile-address">
-              Address : {address} {landmark} {district} - {pincode}
-            </div>
-            <div>Pin Code : {pincode}</div>
+        </div>
+        <div className="profile-information">
+          <div>
+            Name : {user.firstName} {user.lastName}
           </div>
-          <div className="button-edit-position">
-            <button className="profile-edit" onClick={onClick}>
-              Edit <FiEdit style={{ paddingLeft: "5px", fontSize: "19px" }} />
-            </button>
+          <div>Email: andranakash@gamil.com</div>
+          <div>DOB : {user.dob} </div>
+          <div>Mobile Number : {user.phNumber}</div>
+          <div className="profile-address">
+            Address :{" "}
+            {user.residentialAddress === null
+              ? ""
+              : user.residentialAddress.address}
+            {user.residentialAddress === null
+              ? ""
+              : user.residentialAddress.district}{" "}
+            -{" "}
+            {user.residentialAddress === null
+              ? ""
+              : user.residentialAddress.pincode}
           </div>
+          <div>
+            Landmak :{" "}
+            {user.residentialAddress === null
+              ? ""
+              : user.residentialAddress.landmark}
+          </div>
+          <div>
+            Pin Code :{" "}
+            {user.residentialAddress === null
+              ? ""
+              : user.residentialAddress.pincode}
+          </div>
+        </div>
+        <div className="button-edit-position">
+          <button className="profile-edit" onClick={onClick}>
+            Edit <FiEdit style={{ paddingLeft: "5px", fontSize: "19px" }} />
+          </button>
         </div>
       </div>
     </div>

@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { HiOutlineLogout } from "react-icons/hi";
+
 import ProfileDetails from "./ProfileDetails";
 import EditProfile from "./EditProfile";
-
 import "./profile2.css";
-import { HiOutlineLogout } from "react-icons/hi";
+import AuthenticationService from "../Api/AuthenticationService";
+import { emptyUser } from "./Constants";
+import TicketsService from "../Api/TicketsService";
 // import { FiEdit } from "react-icons/fi";
 // import { GrUpdate } from "react-icons/gr";
 
@@ -14,92 +18,47 @@ import { HiOutlineLogout } from "react-icons/hi";
 // import "react-datepicker/dist/react-datepicker.css";
 // import "react-phone-number-input/style.css";
 
-export default function Profile() {
+export default function Profile({ user, setLoggedIn, setUser }) {
   // const [image, setImage] = useState(null);
+  const navigate = useNavigate();
   const [showComponent, setShowComponent] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLasttName] = useState("");
-  const [phNumber, setPhNumber] = useState();
-  const [DOB, setDOB] = useState();
-  const [address, setAddress] = useState("");
-  const [landmark, setLandmark] = useState("");
-  const [district, setDistrict] = useState("");
-  const [pincode, setPincode] = useState("");
+  let { profileId } = useParams();
+  let mounted = true;
 
-  // Function to handle file input change
-  // const handleFileChange = (e) => {
-  //   const file = e.target.files[0];
-  //   const reader = new FileReader();
+  useEffect(() => {
+    fetchData(mounted);
+    return () => (mounted = false);
+  }, []);
 
-  //   reader.onloadend = () => {
-  //     setImage(reader.result);
-  //   };
+  async function fetchData(mounted) {
+    if (mounted) {
+      await TicketsService.getProfileById(profileId).then((response) => {
+        if (response !== undefined) {
+          setUser(response);
+        }
+      });
+    }
+  }
 
-  //   if (file) {
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
+  const handleLogout = () => {
+    setLoggedIn(AuthenticationService.logout());
+    setUser(emptyUser);
+    navigate(`/i-tracker/login`);
+  };
 
   function handleClick() {
     setShowComponent(true);
-  }
-  function UpdateFirstName(value) {
-    setFirstName(value);
-  }
-  function UpdateLastName(value) {
-    setLasttName(value);
-  }
-  function UpdatePhNumber(value) {
-    setPhNumber(value);
-  }
-  function UpdateDOB(value) {
-    setDOB(value);
-  }
-  function UpdateAddress(value) {
-    setAddress(value);
-  }
-  function UpdateLandmark(value) {
-    setLandmark(value);
-  }
-  function UpdateDistrict(value) {
-    setDistrict(value);
-  }
-  function UpdatePincode(value) {
-    setPincode(value);
   }
 
   return (
     <div className="main-container">
       <div className="profile-container">
-        <ProfileDetails
-          firstName={firstName}
-          lastName={lastName}
-          phNumber={phNumber}
-          DOB={DOB}
-          address={address}
-          landmark={landmark}
-          district={district}
-          pincode={pincode}
-          onClick={handleClick}
-        />
-        {showComponent ? (
-          <EditProfile
-            updateFirstName={UpdateFirstName}
-            updateLastName={UpdateLastName}
-            updatePhNumber={UpdatePhNumber}
-            updateDOB={UpdateDOB}
-            updateAddress={UpdateAddress}
-            updateLandmark={UpdateLandmark}
-            updateDistrict={UpdateDistrict}
-            updatePincode={UpdatePincode}
-          />
-        ) : (
-          ""
-        )}
+        <ProfileDetails user={user} onClick={handleClick} />
+        {showComponent ? <EditProfile user={user} setUser={setUser} /> : ""}
         <div className="button-logout-position">
           <div>
-            <button className="button-logout">
-              LOGOUT{" "}
+            <button className="button-logout" onClick={handleLogout}>
+              LOGOUT
               <HiOutlineLogout
                 style={{ paddingLeft: "3px", fontSize: "23px" }}
               />

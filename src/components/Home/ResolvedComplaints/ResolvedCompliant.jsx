@@ -6,9 +6,7 @@ function ResolvedCompliant() {
     // <div className="home-main-container1">
     //   <CardElement />
     // </div>
-    <div>
-      <div className="home-bottom-container">bottom</div>
-    </div>
+    <div>{/* <div className="home-bottom-container">bottom</div> */}</div>
   );
 }
 

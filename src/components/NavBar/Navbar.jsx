@@ -1,19 +1,47 @@
-import { useRef } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
+import { Link, useParams, useMatch } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { FaLeaf } from "react-icons/fa";
-import React from "react";
 import "./Navbar.css";
 import { navItems } from "./NavItems.js";
-import { Link } from "react-router-dom";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner.jsx";
 
-export default function Navbar() {
+import TicketsService from "../Api/TicketsService.js";
+
+export default function Navbar({ loggedIn, user, setUser }) {
+  const [loading, setLoading] = useState(false);
+  const [profileId, setProfileId] = useState("");
+  const match = useMatch("i-tracker/users/:profileId/*");
+  let mounted = true;
+
+  useEffect(() => {
+    console.log("user " + user.role);
+    if (match) {
+      setProfileId(match.params.profileId);
+      fetchData(mounted, match.params.profileId);
+    }
+    return () => (mounted = false);
+  }, [match, user.role]);
   const navRef = useRef();
 
   const showNavbar = () => {
     navRef.current.classList.toggle("responsive_nav");
   };
+
+  async function fetchData(mounted, profileIdParam) {
+    setLoading(true);
+    if (mounted && profileIdParam !== "") {
+      await TicketsService.getProfileById(profileIdParam).then((response) => {
+        console.log(response);
+        if (response !== undefined) setUser(response);
+      });
+    }
+    setLoading(false);
+  }
+
   return (
     <>
+      {loading && <LoadingSpinner />}
       <header>
         <div className="title">
           <FaLeaf />
@@ -22,6 +50,7 @@ export default function Navbar() {
         <div styles="float-right">
           <nav ref={navRef}>
             {navItems.map((item) => {
+              const href = item.path.replace(":profileId", profileId);
               // if (item.title === "Create New") {
               //   return (
               //     <div key={item.id} className={item.cName}>
@@ -31,7 +60,7 @@ export default function Navbar() {
               // }
               return (
                 <div key={item.id} onClick={showNavbar} className={item.cName}>
-                  <Link to={item.path}>{item.title}</Link>
+                  <Link to={href}>{item.title}</Link>
                 </div>
               );
             })}
