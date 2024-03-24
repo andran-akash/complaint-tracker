@@ -8,6 +8,7 @@ import "./profile2.css";
 import AuthenticationService from "../Api/AuthenticationService";
 import { emptyUser } from "./Constants";
 import TicketsService from "../Api/TicketsService";
+
 // import { FiEdit } from "react-icons/fi";
 // import { GrUpdate } from "react-icons/gr";
 
@@ -19,6 +20,7 @@ import TicketsService from "../Api/TicketsService";
 // import "react-phone-number-input/style.css";
 
 export default function Profile({ user, setLoggedIn, setUser }) {
+  const [loading, setLoading] = useState(false);
   // const [image, setImage] = useState(null);
   const navigate = useNavigate();
   const [showComponent, setShowComponent] = useState(false);
@@ -32,11 +34,13 @@ export default function Profile({ user, setLoggedIn, setUser }) {
 
   async function fetchData(mounted) {
     if (mounted) {
-      await TicketsService.getProfileById(profileId).then((response) => {
-        if (response !== undefined) {
-          setUser(response);
+      await TicketsService.getProfileById(profileId, profileId).then(
+        (response) => {
+          if (response !== undefined) {
+            setUser(response);
+          }
         }
-      });
+      );
     }
   }
 

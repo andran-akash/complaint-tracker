@@ -1,0 +1,219 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.viewc-main-container {
+  /* width: 80%; */
+  /* height: 100vh; */
+  /* height: 70vh; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 5% auto;
+}
+
+.viewc-primarycontainer {
+  position: relative;
+  display: flex;
+  /* align-items: center;
+  justify-content: center; */
+  width: 55%;
+
+  /* height: fit-content; */
+  border: 1px solid #ccc;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  animation: slideRightToLeft 1s forwards;
+  padding: 10px;
+}
+.viewc-primarycontainer:hover {
+  transform: translateY(-10px) translateX(-10px);
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.2);
+}
+@keyframes slideRightToLeft {
+  from {
+    right: -100%; /* Initial position */
+  }
+  to {
+    right: 0; /* Final position */
+  }
+}
+.viewc-secondarycontainer {
+  width: 100%;
+}
+.viewc-header {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: sans-serif;
+  /* padding-bottom: 10px; */
+  border-bottom: 0.5px solid gray;
+}
+
+.viewc-imagecontainer {
+  /* margin-top: 10px; */
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  /* border: ; */
+}
+
+.viewc-image-secondarycontainer {
+  position: relative;
+  /* margin-bottom: 5px; */
+  /* background-color: whitesmoke; */
+}
+
+.viewc-imagetitle {
+  font-size: 20px;
+  font-weight: bold;
+  align-self: flex-start;
+  margin-left: 5px;
+}
+.viewc-image {
+  width: 75%;
+  height: fit-content;
+}
+
+.viewc-details-container {
+  width: 100%;
+  border: 1px solid gray;
+  margin-top: 10px;
+  padding: 10px;
+}
+.viewc-details-container-title {
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding-bottom: 10px;
+  border-bottom: 0.5px solid gray;
+}
+.viewc-switch-button,
+.viewc-user-status {
+  text-transform: uppercase;
+  font-size: 15px;
+  height: 40px;
+  padding: 0px 10px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  background: #bd2304;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+.viewc-switch-button:hover {
+  color: black;
+  background-color: rgb(207, 201, 201);
+}
+.viewc-grid-container-first {
+  margin-top: 10px;
+}
+.viewc-grid-container-first,
+.viewc-grid-container-second {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.viewc-subject,
+.viewc-description,
+.viewc-department,
+.viewc-createddate,
+.viewc-status {
+  font-size: 15px;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: bold;
+  /* border-bottom: 0.5px solid grey; */
+  margin-bottom: 20px;
+  color: #bd2304;
+}
+.viewc-subject,
+.viewc-status,
+.viewc-description {
+  margin-left: 20px;
+}
+
+.viewc-user-subject,
+.viewc-user-description,
+.viewc-user-department,
+.viewc-user-createddate {
+  text-transform: none;
+  font-style: normal;
+  font-size: 20px;
+  font-weight: normal;
+  color: black;
+  margin-left: 20px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+.viewc-user-status {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  width: 50%;
+  cursor: auto;
+}
+
+@media (max-width: 768px) {
+  .viewc-main-container {
+    width: 100%;
+    height: fit-content;
+    margin: 1% auto;
+  }
+  .viewc-primarycontainer {
+    width: 97%;
+    padding: 0;
+    transform: none;
+    animation: none;
+  }
+
+  .viewc-primarycontainer:hover {
+    transform: translateY(0px) translateX(0px);
+    box-shadow: none;
+  }
+  .viewc-image {
+    width: 100%;
+  }
+  .viewc-header {
+    font-size: 18px;
+    padding: 0;
+  }
+  .viewc-user-status {
+    width: 100%;
+  }
+  .viewc-grid-container-first,
+  .viewc-grid-container-second {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin: 0;
+    padding: 0;
+  }
+  .viewc-subject,
+  .viewc-status,
+  .viewc-description {
+    margin-left: 0;
+  }
+  .viewc-subject,
+  .viewc-description,
+  .viewc-department,
+  .viewc-createddate,
+  .viewc-status {
+    margin: 0;
+  }
+  .viewc-user-subject,
+  .viewc-user-description,
+  .viewc-user-department,
+  .viewc-user-createddate {
+    margin: 0;
+  }
+}

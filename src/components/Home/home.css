@@ -7,17 +7,34 @@
 .current-complaints {
   background-color: #eeeeee;
   display: flex;
-  height: 100px;
+  height: 60px;
   align-items: center;
   padding-left: 20px;
   margin-bottom: 20px;
 }
+
+.sticky {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
+/* .rsticky {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+} */
+
 .Resolved-complaints {
   color: rgb(62, 118, 6);
   background-color: #eeeeee;
   padding-left: 20px;
   display: flex;
-  height: 100px;
+  height: 60px;
   align-items: center;
   /* margin-bottom: 20px; */
   margin-top: 20px;
@@ -31,6 +48,10 @@
   color: brown;
   font-family: "Titillium Web", sans-serif;
 }
+.current-complaints h1::first-letter {
+  font-family: Harrington;
+  font-size: 45px;
+}
 .complaints {
   padding-top: 25px;
   width: 1500px;
@@ -40,6 +61,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 30px;
 }
 
 .card-element {
@@ -48,6 +70,7 @@
   grid-template-columns: 1fr 1fr 1fr 1fr;
   /* gap: 0.5rem; */
   gap: 4.8rem;
+  width: min-content;
 }
 .box {
   display: flex;
@@ -93,14 +116,40 @@
   overflow: hidden; */
   /* margin-bottom: 30px; */
 }
+.Resolved-complaints h1::first-letter {
+  font-family: Harrington;
+  font-size: 45px;
+}
 
 .resolved-complaints-bottom {
   margin-top: 20px;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
+  .current-complaints,
+  .Resolved-complaints {
+    margin-bottom: 10px;
+  }
+  .home-top-container {
+    width: 100%;
+  }
+
+  .box {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
   .card-element {
     width: 100%;
     grid-template-columns: 1fr;
+  }
+  .home-top-container {
+    width: 97%;
+  }
+  .card-image {
+    max-width: 100%;
+  }
+  .card-element {
+    gap: 10px;
   }
 }

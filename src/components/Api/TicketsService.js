@@ -94,13 +94,13 @@ const TicketsService = {
         }
       });
   },
-  getProfileById: async (profileId) => {
-    console.log("profileId " + profileId);
+  getProfileById: async (profileId, currentProfileId) => {
+    // console.log("profileId " + profileId);
     const url = `http://localhost:8080/profile/${profileId}`;
     return await axios
       .get(url, {
         headers: {
-          ProfileId: profileId,
+          ProfileId: currentProfileId,
           Authorization:
             "Bearer " + AuthenticationService.getLoggedInUserToken(),
         },
@@ -142,8 +142,59 @@ const TicketsService = {
         }
       });
   },
+  uploadFile: async (profileId, files) => {
+    const url = `http://localhost:8080/upload/${profileId}`;
+    let formData = new FormData();
+    formData.append("file", files);
+    return await axios
+      .post(url, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          ProfileId: profileId,
+          Authorization:
+            "Bearer " + AuthenticationService.getLoggedInUserToken(),
+        },
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        if (
+          error.response &&
+          error.response.status >= 400 &&
+          error.response.status <= 500
+        ) {
+          return error.response.data;
+        }
+      });
+  },
   getDepartments: async (profileId, fieldNames) => {
     const url = `http://localhost:8080/fieldvalues?fieldNames=${fieldNames}`;
+    return await axios
+      .get(url, {
+        headers: {
+          ProfileId: profileId,
+          Authorization:
+            "Bearer " + AuthenticationService.getLoggedInUserToken(),
+        },
+      })
+      .then((response) => {
+        console.log("response " + response.data);
+        return response.data;
+      })
+      .catch((error) => {
+        console.log("error " + error);
+        if (
+          error.response &&
+          error.response.status >= 400 &&
+          error.response.status <= 500
+        ) {
+          return error.response.data;
+        }
+      });
+  },
+  getUsersByDepartments: async (profileId) => {
+    const url = `http://localhost:8080/departments/profiles`;
     return await axios
       .get(url, {
         headers: {

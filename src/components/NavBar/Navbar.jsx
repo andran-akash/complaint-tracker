@@ -15,7 +15,7 @@ export default function Navbar({ loggedIn, user, setUser }) {
   let mounted = true;
 
   useEffect(() => {
-    console.log("user " + user.role);
+    // console.log("user " + user.role);
     if (match) {
       setProfileId(match.params.profileId);
       fetchData(mounted, match.params.profileId);
@@ -31,10 +31,12 @@ export default function Navbar({ loggedIn, user, setUser }) {
   async function fetchData(mounted, profileIdParam) {
     setLoading(true);
     if (mounted && profileIdParam !== "") {
-      await TicketsService.getProfileById(profileIdParam).then((response) => {
-        console.log(response);
-        if (response !== undefined) setUser(response);
-      });
+      await TicketsService.getProfileById(profileIdParam, profileIdParam).then(
+        (response) => {
+          console.log(response);
+          if (response !== undefined) setUser(response);
+        }
+      );
     }
     setLoading(false);
   }

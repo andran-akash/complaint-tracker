@@ -25,6 +25,7 @@ const Login = ({ setLoggedIn, setUser }) => {
     setLoggedIn(AuthenticationService.isUserLoggedIn);
     if (responseData.profileId) {
       const userData = await TicketsService.getProfileById(
+        responseData.profileId,
         responseData.profileId
       );
       setUser(userData);

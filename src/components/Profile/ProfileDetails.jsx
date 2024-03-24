@@ -61,11 +61,19 @@ export default function ProfileDetails({ user, onClick }) {
           <div>Email: andranakash@gamil.com</div>
           <div>DOB : {user.dob} </div>
           <div>Mobile Number : {user.phNumber}</div>
-          <div className="profile-address">
+          <div
+            className="profile-address"
+            style={{
+              // width: "100%",
+              overflow: "auto",
+              wordWrap: "break-word",
+              height: "auto",
+            }}
+          >
             Address :{" "}
             {user.residentialAddress === null
               ? ""
-              : user.residentialAddress.address}
+              : user.residentialAddress.address}{" "}
             {user.residentialAddress === null
               ? ""
               : user.residentialAddress.district}{" "}
@@ -74,7 +82,14 @@ export default function ProfileDetails({ user, onClick }) {
               ? ""
               : user.residentialAddress.pincode}
           </div>
-          <div>
+          <div
+            style={{
+              // width: "100%",
+              overflow: "auto",
+              wordWrap: "break-word",
+              height: "auto",
+            }}
+          >
             Landmak :{" "}
             {user.residentialAddress === null
               ? ""

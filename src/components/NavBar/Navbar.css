@@ -9,6 +9,7 @@
 
 :root {
   --mainColor: #206e20;
+  /* --mainColor: #191a19; */
   --mainColorLight: #394780;
   --secondaryColor: #db2b39;
   --textColor: #eee;
@@ -19,7 +20,8 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 90px;
+  /* height: 90px; */
+  height: 70px;
   padding: 0 2rem;
   background-color: var(--mainColor);
   color: var(--textColor);
@@ -40,6 +42,7 @@ nav a {
   padding: 6px 16px;
   font-size: 1.5rem;
   color: white;
+  /* background: rgb(35, 35, 35); */
   background: #0a490a;
   /* background: rgb(0, 212, 212); */
   border-radius: 5px;

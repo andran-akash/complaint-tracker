@@ -44,6 +44,13 @@ export const emptyUserRegister = {
   phNumber: "",
 };
 
+export const emptyTicket = {
+  subject: "",
+  description: "",
+  department: "",
+  filesBeforeFix: [],
+};
+
 export const departmentList = [
   "The Eletrical Department",
   "TWAD (Tamilnadu Water Supply and Drainage",

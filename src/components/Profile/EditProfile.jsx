@@ -116,8 +116,6 @@ function EditProfile({ user, setUser }) {
                     <label className="profile-label">Address</label>
                     <input
                       className="text-input"
-                      maxLength={35}
-                      placeholder="35 Letters in words"
                       type="text"
                       value={
                         updatedUser.residentialAddress === null

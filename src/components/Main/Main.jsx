@@ -10,9 +10,11 @@ import CreateComplaint from "../Create New/CreateComplaint.jsx";
 import AboutUs from "../About Us/AboutUs.jsx";
 import AuthenticationService from "../Api/AuthenticationService";
 import Signup from "../Signup/Signup.jsx";
-import ComplaintCard from "../Home/CurrentComplaint/ComplaintCard.jsx";
+import ViewComplaint from "../Home/ViewComplaint.jsx";
 import OfficerSignup from "../Signup/OfficerSignup.jsx";
 import { emptyUser } from "../Profile/Constants.js";
+import UpdateComplaint from "../Home/UpdateComplaint.jsx";
+import ComplaintsTableView from "../Admin/ComplaintsTableView.jsx";
 
 export default function Main() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -60,7 +62,12 @@ export default function Main() {
           <Route
             path="i-tracker/users/:profileId/tickets/:ticketId/view"
             exact
-            element={<ComplaintCard />}
+            element={<ViewComplaint />}
+          />
+          <Route
+            path="i-tracker/users/:profileId/tickets/:ticketId/update"
+            exact
+            element={<UpdateComplaint user={user} />}
           />
           <Route
             path="/users/:profileId"
@@ -73,7 +80,10 @@ export default function Main() {
               />
             }
           />
-          <Route path="/aboutUs" element={<AboutUs />} />
+          <Route
+            path="/aboutUs/:profileId"
+            element={<ComplaintsTableView user={user} />}
+          />
         </Routes>
       </BrowserRouter>
       {loggedIn && <Footer />}

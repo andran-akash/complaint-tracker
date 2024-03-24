@@ -1,11 +1,10 @@
 import React from "react";
+import ComplaintsTableView from "../Admin/ComplaintsTableView";
+
+import StepsCarousel from "../StepsCarousel/StepsCarousel";
 
 function AboutUs() {
-  return (
-    <div>
-      <h1>About Us</h1>
-    </div>
-  );
+  return <div>{/* <ComplaintsTableView />; */}</div>;
 }
 
 export default AboutUs;

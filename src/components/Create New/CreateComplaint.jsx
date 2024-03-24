@@ -4,21 +4,20 @@ import { useParams, useNavigate } from "react-router-dom";
 // import { MdOutlineLocationOn } from "react-icons/md";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { MdOutlineMyLocation } from "react-icons/md";
+import { emptyTicket } from "../Profile/Constants";
 
 import "./createnew.css";
 import TicketsService from "../Api/TicketsService";
+import DocumentService from "../Api/DocumentService";
 
 // import { MdOutlineClose } from "react-icons/md";
 // import Select from "react-select";
 
 export default function CreateComplaint() {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [imagesToUpload, setImagesToUpload] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [ticket, setTicket] = useState({
-    subject: "",
-    description: "",
-    department: "",
-  });
+  const [ticket, setTicket] = useState(emptyTicket);
   let { profileId } = useParams();
   const [error, setError] = useState("");
   const [departmentList, setDepartmentList] = useState([]);
@@ -51,13 +50,25 @@ export default function CreateComplaint() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const responseData = await TicketsService.createTicket(profileId, ticket);
-    if (responseData.ticket) {
-      navigate(`/i-tracker/users/${profileId}/tickets`);
-    } else if (responseData.error) {
-      setError(responseData.error.message);
+    const uploadedFile = await DocumentService.uploadFile(
+      profileId,
+      imagesToUpload
+    );
+    if (uploadedFile) {
+      setTicket({ ...ticket, filesBeforeFix: [uploadedFile] });
+      const responseData = await TicketsService.createTicket(profileId, {
+        ...ticket,
+        filesBeforeFix: [...ticket.filesBeforeFix, uploadedFile],
+      });
+      if (responseData.ticket) {
+        navigate(`/i-tracker/users/${profileId}/tickets`);
+      } else if (responseData.error) {
+        setError(responseData.error.message);
+      } else {
+        setError("Unknown Error. Pls try after sometime");
+      }
     } else {
-      setError("Unknown Error. Pls try after sometime");
+      setError("File Upload failed");
     }
   };
 
@@ -67,6 +78,7 @@ export default function CreateComplaint() {
       const reader = new FileReader();
       reader.onload = (e) => {
         setSelectedImage(e.target.result);
+        setImagesToUpload(file);
       };
       reader.readAsDataURL(file);
     }

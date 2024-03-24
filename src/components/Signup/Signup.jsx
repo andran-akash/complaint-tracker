@@ -5,6 +5,8 @@ import AuthenticationService from "../Api/AuthenticationService";
 import TicketsService from "../Api/TicketsService";
 import { emptyUserRegister } from "../Profile/Constants";
 
+import Background from "../Images/background.gif";
+
 const Signup = ({ setLoggedIn, setUser }) => {
   const [data, setData] = useState(emptyUserRegister);
   const [error, setError] = useState("");
@@ -21,6 +23,7 @@ const Signup = ({ setLoggedIn, setUser }) => {
     console.log(responseData);
     if (responseData.profileId) {
       const userData = await TicketsService.getProfileById(
+        responseData.profileId,
         responseData.profileId
       );
       setUser(userData);

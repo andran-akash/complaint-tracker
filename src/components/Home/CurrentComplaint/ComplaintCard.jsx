@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Image from "./Image6.jpg";
+// import Image from "./Vertical.jpg";
 import "./currentcomplaint.css";
 
 import { RiDeleteBinLine } from "react-icons/ri";

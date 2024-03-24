@@ -46,6 +46,7 @@
 .profile-information {
   /* text-align: center; */
   padding-top: 25px;
+  height: auto;
 }
 .profile-information div {
   border-style: none;
@@ -322,7 +323,7 @@
   }
   .profile-pic {
     /* height: 100%; */
-    width: fit-content;
+    width: 100%;
     /* height: 100%; */
     /* height: 750px; */
     margin: 0;

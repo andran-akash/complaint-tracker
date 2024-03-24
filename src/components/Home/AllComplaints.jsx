@@ -6,6 +6,8 @@ import "./home.css";
 import ComplaintCard from "./CurrentComplaint/ComplaintCard.jsx";
 import ResolvedCompliant from "./ResolvedComplaints/ResolvedCompliant.jsx";
 import TicketsService from "../Api/TicketsService.js";
+import StickyHeader from "../StickyHeader/StickyHeader.jsx";
+import StepsCarousel from "../StepsCarousel/StepsCarousel.jsx";
 
 export default function AllComplaints({ user }) {
   const [tickets, setTickets] = useState([]);
@@ -35,6 +37,8 @@ export default function AllComplaints({ user }) {
 
   return (
     <div className="home-main-container">
+      {/* <StickyHeader /> */}
+      {/* <StepsCarousel /> */}
       <div className="current-complaints">
         <h1>
           {/* <GiFeatheredWing /> */}
@@ -46,24 +50,12 @@ export default function AllComplaints({ user }) {
           {tickets !== "" &&
             tickets.map(
               (ticket) =>
-                ticket.status === "Open" && (
+                ticket.status !== "Resolved" && (
                   <li className="box" key={ticket.id}>
                     <ComplaintCard ticket={ticket} accessList={accessList} />
                   </li>
                 )
             )}
-          {/* <li className="box">
-            <CurrentComplaint />
-          </li>
-          <li className="box">
-            <CurrentComplaint />
-          </li>
-          <li className="box">
-            <CurrentComplaint />
-          </li>
-          <li className="box">
-            <CurrentComplaint />
-          </li> */}
         </ul>
       </div>
 
@@ -77,12 +69,17 @@ export default function AllComplaints({ user }) {
           Resolved Complaints
         </h1>
       </div>
-
       <div className="complaint-main-container">
         <ul className="card-element">
-          <li className="box">
-            <ResolvedCompliant />
-          </li>
+          {tickets !== "" &&
+            tickets.map(
+              (ticket) =>
+                ticket.status === "Resolved" && (
+                  <li className="box" key={ticket.id}>
+                    <ComplaintCard ticket={ticket} accessList={accessList} />
+                  </li>
+                )
+            )}
         </ul>
       </div>
 
