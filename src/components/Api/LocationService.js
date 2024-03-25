@@ -1,16 +1,4 @@
-import axios from "axios";
-import {
-  setKey,
-  setDefaults,
-  setLanguage,
-  setRegion,
-  fromAddress,
-  fromLatLng,
-  fromPlaceId,
-  setLocationType,
-  geocode,
-  RequestType,
-} from "react-geocode";
+import { setDefaults, geocode, RequestType } from "react-geocode";
 
 setDefaults({
   key: "", // Your API key here.
