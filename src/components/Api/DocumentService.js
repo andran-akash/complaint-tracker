@@ -1,9 +1,11 @@
 import axios from "axios";
 import AuthenticationService from "./AuthenticationService.js";
 
+const documentSvcUri = "http://localhost:8080";
+
 const DocumentService = {
   uploadFile: async (profileId, files) => {
-    const url = `http://localhost:8080/upload/${profileId}`;
+    const url = `${documentSvcUri}/upload/${profileId}`;
     let formData = new FormData();
     formData.append("file", files);
     return await axios
@@ -29,7 +31,7 @@ const DocumentService = {
       });
   },
   downloadFile: async (profileId, fileId) => {
-    const url = `http://localhost:8080/download/${fileId}`;
+    const url = `${documentSvcUri}/download/${fileId}`;
     return await axios
       .get(url, {
         headers: {

@@ -201,56 +201,6 @@ function UpdateComplaint({ user }) {
               </select>
             </li>
           )}
-          {user.role === "admin" && (
-            <>
-              <li className="update-admin-input-cell">
-                <div className="update-admin-option">Department</div>
-                <select
-                  className="update-admin-new-input"
-                  defaultValue=""
-                  name="department"
-                  onChange={handleDepartmentEvent}
-                  required
-                >
-                  <option value="">--Select Department--</option>
-                  {departmentList.map((department) => {
-                    return (
-                      <option key={department.name} value={department.name}>
-                        {department.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </li>
-              {officerList !== undefined && officerList.length > 0 && (
-                <li className="update-admin-input-cell">
-                  <div className="update-admin-option">Officer</div>
-                  <select
-                    defaultValue=""
-                    name="assignedTo"
-                    onChange={(e) => {
-                      setTicket({ ...ticket, assignedTo: e.target.value });
-                    }}
-                    required
-                    className="update-admin-new-input"
-                  >
-                    <option value="">--Select Officer--</option>
-                    {officerList !== undefined &&
-                      officerList.map((officer) => {
-                        return (
-                          <option
-                            key={officer.profileId}
-                            value={officer.profileId}
-                          >
-                            {officer.firstName} {officer.lastName}
-                          </option>
-                        );
-                      })}
-                  </select>
-                </li>
-              )}
-            </>
-          )}
           <li className="update-admin-input-cell">
             <div className="update-admin-option">Upload Image</div>
             <input
@@ -308,6 +258,56 @@ function UpdateComplaint({ user }) {
               </div>
             </Modal>
           </li>
+          {user.role === "admin" && (
+            <>
+              <li className="update-admin-input-cell">
+                <div className="update-admin-option">Department</div>
+                <select
+                  className="update-admin-new-input"
+                  defaultValue=""
+                  name="department"
+                  onChange={handleDepartmentEvent}
+                  required
+                >
+                  <option value="">--Select Department--</option>
+                  {departmentList.map((department) => {
+                    return (
+                      <option key={department.name} value={department.name}>
+                        {department.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </li>
+              {officerList !== undefined && officerList.length > 0 && (
+                <li className="update-admin-input-cell">
+                  <div className="update-admin-option">Officer</div>
+                  <select
+                    defaultValue=""
+                    name="assignedTo"
+                    onChange={(e) => {
+                      setTicket({ ...ticket, assignedTo: e.target.value });
+                    }}
+                    required
+                    className="update-admin-new-input"
+                  >
+                    <option value="">--Select Officer--</option>
+                    {officerList !== undefined &&
+                      officerList.map((officer) => {
+                        return (
+                          <option
+                            key={officer.profileId}
+                            value={officer.profileId}
+                          >
+                            {officer.firstName} {officer.lastName}
+                          </option>
+                        );
+                      })}
+                  </select>
+                </li>
+              )}
+            </>
+          )}
         </ul>
         {(user.role === "admin" || user.role === "officer") && (
           // <li className="update-admin-button-cell">

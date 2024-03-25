@@ -1,9 +1,11 @@
 import axios from "axios";
 import AuthenticationService from "./AuthenticationService.js";
 
+const ticketSvcUri = "http://localhost:8080";
+
 const TicketsService = {
   getAllTicketsForUser: async (profileId) => {
-    const url = `http://localhost:8080/profile/${profileId}/tickets`;
+    const url = `${ticketSvcUri}/profile/${profileId}/tickets`;
     return await axios
       .get(url, {
         headers: {
@@ -26,7 +28,7 @@ const TicketsService = {
       });
   },
   createTicket: async (profileId, ticket) => {
-    const url = `http://localhost:8080/profile/${profileId}/ticket`;
+    const url = `${ticketSvcUri}/profile/${profileId}/ticket`;
     return await axios
       .post(url, ticket, {
         headers: {
@@ -49,7 +51,7 @@ const TicketsService = {
       });
   },
   updateTicket: async (profileId, ticketId, ticket) => {
-    const url = `http://localhost:8080/profile/${profileId}/ticket/${ticketId}`;
+    const url = `${ticketSvcUri}/profile/${profileId}/ticket/${ticketId}`;
     return await axios
       .put(url, ticket, {
         headers: {
@@ -72,7 +74,7 @@ const TicketsService = {
       });
   },
   getTicketById: async (profileId, id) => {
-    const url = `http://localhost:8080/profile/${profileId}/ticket/${id}`;
+    const url = `${ticketSvcUri}/profile/${profileId}/ticket/${id}`;
     return await axios
       .get(url, {
         headers: {
@@ -96,7 +98,7 @@ const TicketsService = {
   },
   getProfileById: async (profileId, currentProfileId) => {
     // console.log("profileId " + profileId);
-    const url = `http://localhost:8080/profile/${profileId}`;
+    const url = `${ticketSvcUri}/profile/${profileId}`;
     return await axios
       .get(url, {
         headers: {
@@ -120,7 +122,7 @@ const TicketsService = {
   },
   updateProfileById: async (profileId, user) => {
     console.log("profileId " + profileId);
-    const url = `http://localhost:8080/profile/${profileId}`;
+    const url = `${ticketSvcUri}/profile/${profileId}`;
     return await axios
       .put(url, user, {
         headers: {
@@ -143,7 +145,7 @@ const TicketsService = {
       });
   },
   uploadFile: async (profileId, files) => {
-    const url = `http://localhost:8080/upload/${profileId}`;
+    const url = `${ticketSvcUri}/upload/${profileId}`;
     let formData = new FormData();
     formData.append("file", files);
     return await axios
@@ -169,7 +171,7 @@ const TicketsService = {
       });
   },
   getDepartments: async (profileId, fieldNames) => {
-    const url = `http://localhost:8080/fieldvalues?fieldNames=${fieldNames}`;
+    const url = `${ticketSvcUri}/fieldvalues?fieldNames=${fieldNames}`;
     return await axios
       .get(url, {
         headers: {
@@ -194,7 +196,7 @@ const TicketsService = {
       });
   },
   getUsersByDepartments: async (profileId) => {
-    const url = `http://localhost:8080/departments/profiles`;
+    const url = `${ticketSvcUri}/departments/profiles`;
     return await axios
       .get(url, {
         headers: {

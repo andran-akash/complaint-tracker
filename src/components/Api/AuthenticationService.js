@@ -1,8 +1,10 @@
 import axios from "axios";
 
+const authSvcUri = "http://localhost:8081";
+
 const AuthenticationService = {
   registerSuccessfulLogin: async (data) => {
-    const url = "http://localhost:8081/loginsvc/login";
+    const url = `${authSvcUri}/loginsvc/login`;
     return await axios
       .post(url, data)
       .then((response) => {
@@ -23,7 +25,7 @@ const AuthenticationService = {
       });
   },
   registerNewUser: async (data) => {
-    const url = "http://localhost:8081/loginsvc/register";
+    const url = `${authSvcUri}/loginsvc/register`;
     return await axios
       .post(url, data)
       .then((response) => {
@@ -44,7 +46,7 @@ const AuthenticationService = {
       });
   },
   registerNewOfficer: async (data) => {
-    const url = "http://localhost:8081/loginsvc/register/officer";
+    const url = `${authSvcUri}/loginsvc/register/officer`;
     return await axios
       .post(url, data)
       .then((response) => {

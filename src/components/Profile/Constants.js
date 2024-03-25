@@ -49,6 +49,13 @@ export const emptyTicket = {
   description: "",
   department: "",
   filesBeforeFix: [],
+  location: {
+    address: "",
+    pincode: "",
+    latitude: "",
+    longitude: "",
+    landmark: "",
+  },
 };
 
 export const departmentList = [

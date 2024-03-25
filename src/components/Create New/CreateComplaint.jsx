@@ -9,6 +9,7 @@ import { emptyTicket } from "../Profile/Constants";
 import "./createnew.css";
 import TicketsService from "../Api/TicketsService";
 import DocumentService from "../Api/DocumentService";
+import LocationService from "../Api/LocationService";
 
 // import { MdOutlineClose } from "react-icons/md";
 // import Select from "react-select";
@@ -18,17 +19,26 @@ export default function CreateComplaint() {
   const [imagesToUpload, setImagesToUpload] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [ticket, setTicket] = useState(emptyTicket);
+  const [location, setLocation] = useState({ latitude: "", longtitude: "" });
   let { profileId } = useParams();
   const [error, setError] = useState("");
   const [departmentList, setDepartmentList] = useState([]);
   const navigate = useNavigate();
   let mounted = true;
+  let mounted2 = true;
   const fileInputRef = useRef(null);
 
   useEffect(() => {
     fetchDepartments(mounted);
     return () => (mounted = false);
   }, []);
+
+  // useEffect(() => {
+  //   if (mounted2) {
+  //     fetchAddress();
+  //   }
+  //   return () => (mounted2 = false);
+  // }, [location]);
 
   async function fetchDepartments(mounted) {
     if (mounted) {
@@ -93,6 +103,53 @@ export default function CreateComplaint() {
 
   const handleCloseModal = () => {
     setIsOpen(false);
+  };
+
+  const getLocation = async () => {
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      setLocation({
+        latitude: position.coords.latitude,
+        longtitude: position.coords.longitude,
+      });
+      await fetchAddress({
+        latitude: "" + position.coords.latitude,
+        longtitude: "" + position.coords.longitude,
+      });
+    });
+  };
+
+  const fetchAddress = async (locationCoords) => {
+    if (
+      locationCoords.latitude !== undefined &&
+      locationCoords.latitude !== ""
+    ) {
+      await LocationService.getAddress(locationCoords).then((response) => {
+        const pincode =
+          response.address_components[response.address_components.length - 1]
+            .long_name;
+        setLocation({
+          ...locationCoords,
+          address: response.formatted_address,
+          pincode: pincode,
+        });
+        setTicket({
+          ...ticket,
+          location: {
+            ...locationCoords,
+            address: response.formatted_address,
+            pincode: pincode,
+          },
+        });
+        console.log({
+          ...ticket,
+          location: {
+            ...locationCoords,
+            address: response.formatted_address,
+            pincode: pincode,
+          },
+        });
+      });
+    }
   };
 
   return (
@@ -231,7 +288,10 @@ export default function CreateComplaint() {
             <ul className="create-new-row">
               <li className="create-new-list">
                 <label className="create-new-lable">Fault Location</label>
-                <button className="create-new-currentloco-button">
+                <button
+                  className="create-new-currentloco-button"
+                  onClick={getLocation}
+                >
                   Current Location
                   <MdOutlineMyLocation
                     style={{
@@ -244,17 +304,35 @@ export default function CreateComplaint() {
               </li>
               <li className="create-new-list">
                 <label className="create-new-lable">pin-code</label>
-                <input required className="create-new-input" disabled />
+                <input
+                  required
+                  className="create-new-input"
+                  disabled
+                  value={ticket.location.pincode}
+                />
               </li>
               <li className="create-new-list">
                 <label className="create-new-lable">Address</label>
-                <input required className="create-new-input" />
+                <input
+                  required
+                  className="create-new-input"
+                  disabled
+                  value={ticket.location.address}
+                />
               </li>
               <li className="create-new-list">
                 <label className="create-new-lable">Proximate Landmark</label>
                 <input
                   name="landmark"
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    setTicket({
+                      ...ticket,
+                      location: {
+                        ...ticket.location,
+                        landmark: e.target.value,
+                      },
+                    });
+                  }}
                   required
                   className="create-new-input"
                 />

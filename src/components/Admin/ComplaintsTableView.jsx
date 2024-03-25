@@ -2,13 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 
 import "./admintable.css";
-import TicketsService from "../Api/TicketsService.js";
 
-export default function ComplaintsTableView({ user }) {
-  const [tickets, setTickets] = useState([]);
-  const [accessList, setAccessList] = useState([]);
+export default function ComplaintsTableView({ user, tickets, accessList }) {
+  // const [tickets, setTickets] = useState([]);
+  // const [accessList, setAccessList] = useState([]);
   const [unResolvedTickets, setUnResolvedTickets] = useState([]);
-  const [error, setError] = useState("");
   const navigate = useNavigate();
   // let location = useLocation();
   let { profileId } = useParams();
@@ -17,22 +15,15 @@ export default function ComplaintsTableView({ user }) {
   useEffect(() => {
     fetchData(mounted);
     return () => (mounted = false);
-  }, []);
+  }, [tickets]);
 
   async function fetchData(mounted) {
     if (mounted) {
-      await TicketsService.getAllTicketsForUser(profileId).then((response) => {
-        if (response.tickets !== undefined) {
-          setTickets(response.tickets);
-          setUnResolvedTickets(
-            response.tickets.filter((ticket) => ticket.status !== "Resolved")
-          );
-        }
-        setAccessList(response.access.accessList);
-        if (response.error) {
-          setError(response.error);
-        }
-      });
+      if (tickets !== undefined) {
+        setUnResolvedTickets(
+          tickets.filter((ticket) => ticket.status !== "Resolved")
+        );
+      }
     }
   }
 
@@ -47,7 +38,7 @@ export default function ComplaintsTableView({ user }) {
               <th>subject</th>
               <th>department</th>
               <th>Created date</th>
-              <th>Phone number</th>
+              <th>Land mark</th>
               <th>pincode</th>
               <th>status</th>
               <th>View</th>
@@ -67,8 +58,10 @@ export default function ComplaintsTableView({ user }) {
                   <td className="admin-tbody-th-createddate">
                     {ticket.createdDt}
                   </td>
-                  <td className="admin-tbody-th-phone">1234567890</td>
-                  <td>{ticket.createdDt}</td>
+                  <td className="admin-tbody-th-phone">
+                    {ticket.location.landmark}
+                  </td>
+                  <td>{ticket.location.pincode}</td>
                   <td>{ticket.status}</td>
                   {accessList !== "" &&
                     accessList.map((access) => {
